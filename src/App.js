@@ -1,25 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState, useEffect } from 'react';
+import useAuth from './useAuth';
+import * as d3 from "d3";
+
 
 function App() {
+  let [ loading, penguins, error ] = useAuth()
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <h2>Get User Data</h2>
+      <div className="user">
+        { loading && <div>Loading...</div> }
+        { error && <div className="error">ERROR OH NO</div> }
+        {penguins && <>
+          User ID: {penguins} <br />
+        </>}
+      </div>
+    </>
+  )
 }
 
 export default App;

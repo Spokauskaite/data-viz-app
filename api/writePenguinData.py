@@ -10,7 +10,7 @@ import sqlite3
 import seaborn as sns
 
 # change dir
-db_path = 'C:/Users/Lina/Desktop/data-viz-app'
+db_path = 'C:/Users/Lina/Desktop/data-viz-app/api'
 os.chdir(db_path)
 
 # create DB
@@ -47,3 +47,11 @@ c.executemany('INSERT INTO penguins VALUES (?,?,?,?,?,?,?)', value_list)
 # test
 c.execute('SELECT * FROM penguins ')
 print (c.fetchone())
+
+#--------------------Close connection------------------------------------------
+
+# save changes
+conn.commit()
+
+#close DB connection
+conn.close()
