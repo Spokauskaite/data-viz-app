@@ -40,7 +40,16 @@ def loadPenguinData():
     c.execute(sql_query)
     fetched_data=c.fetchall()
     fetched_data = pd.DataFrame(fetched_data)
-    fetched_data = fetched_data.to_json(orient='index')
+    fetched_data.columns = [
+        'species',
+        'island',
+        'bill_length_mm',
+        'bill_depth_mm',
+        'flipper_length_mm',
+        'body_mass_g',
+        'sex' 
+    ]
+    fetched_data = fetched_data.to_json()
     return {"penguins":fetched_data}
 
 # this is for logging-------------------------
