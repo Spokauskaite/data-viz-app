@@ -50,7 +50,7 @@ def loadPenguinData():
         'sex' 
     ]
     fetched_data = fetched_data.to_json()
-    return {"penguins":fetched_data}
+    return {"data":fetched_data}
 
 # this is for logging-------------------------
 if __name__ == '__main__':

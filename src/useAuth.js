@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import ReactDOM from 'react-dom';
 
-function useAuth() {
+function useAuth(api) {
     let [state, dispatch] = useReducer((state, action) => {
     switch(action.type) {
       case 'LOADING': {
@@ -35,11 +35,11 @@ function useAuth() {
   useEffect(() => {
     let isCurrent = true
     dispatch({ type: "LOADING" })
-    fetch('/loadPenguinData')
+    fetch(api)
       .then(response => response.json())
       .then(json => {
         if (isCurrent) {
-          dispatch({ type: "RESOLVED", response: json.penguins })
+          dispatch({ type: "RESOLVED", response: JSON.parse(json.data) })
         }
       }).catch(error => {
         dispatch({ type: "ERROR", error })

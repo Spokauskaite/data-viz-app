@@ -1,21 +1,18 @@
-import './App.css';
-import { useState, useEffect } from 'react';
-import useAuth from './useAuth';
-import * as d3 from "d3";
-
+import './App.css'
+import useAuth from './useAuth'
+import BarChart from './charts/BarChart'
+import ScatterPlot from './charts/ScatterPlot'
 
 function App() {
-  let [ loading, penguins, error ] = useAuth()
-
+  let [ loading, penguins, error ] = useAuth('/loadPenguinData')
+  
   return (
     <>
-      <h2>Get User Data</h2>
-      <div className="user">
+      <div>
         { loading && <div>Loading...</div> }
         { error && <div className="error">ERROR OH NO</div> }
-        {penguins && <>
-          User ID: {penguins} <br />
-        </>}
+        {penguins && <BarChart data={penguins}/>}
+        {penguins && <ScatterPlot data={penguins}/>}
       </div>
     </>
   )
