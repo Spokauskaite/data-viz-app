@@ -49,7 +49,7 @@ def loadPenguinData():
         'body_mass_g',
         'sex' 
     ]
-    fetched_data = fetched_data.to_json()
+    fetched_data = fetched_data.to_json(orient='records')
     return {"data":fetched_data}
 
 # this is for logging-------------------------

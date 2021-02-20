@@ -17,7 +17,7 @@ const BarChart = ({data}) => {
 
   return(
     <>
-      <div ref={barPlot} ></div>
+      <div ref={barPlot} className='chart'></div>
     </>
   )
 }

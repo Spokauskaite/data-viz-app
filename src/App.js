@@ -8,7 +8,7 @@ function App() {
   
   return (
     <>
-      <div>
+      <div className='main-page'>
         { loading && <div>Loading...</div> }
         { error && <div className="error">ERROR OH NO</div> }
         {penguins && <BarChart data={penguins}/>}
