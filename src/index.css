@@ -17,3 +17,10 @@ code {
   height:100vh;
   margin: auto;
 }
+
+.gridline{
+  stroke: black;
+  shape-rendering: crispEdges;
+  stroke-opacity: .2;
+}
+
