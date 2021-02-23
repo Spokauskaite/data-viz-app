@@ -11,7 +11,6 @@ function App() {
       <div className='main-page'>
         { loading && <div>Loading...</div> }
         { error && <div className="error">ERROR OH NO</div> }
-        {penguins && <BarChart data={penguins}/>}
         {penguins && <ScatterPlot data={penguins}/>}
       </div>
     </>
