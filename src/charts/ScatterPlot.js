@@ -4,8 +4,9 @@ import * as d3 from 'd3'
 const ScatterPlot = ({data}) => {
   const scatterPlot = useRef(null)
   const drawScatterPlot = (data) => {
+
     // set parameters
-    var margin = {top: 80, right:120, bottom: 50, left: 50}
+    var margin = {top: 80, right:120, bottom: 60, left: 60}
     const width = 600 - margin.left - margin.right
     const height = 400 - margin.top - margin.bottom
     const maxX = d3.max( data.map( d => d.bill_length_mm ))
@@ -29,7 +30,6 @@ const ScatterPlot = ({data}) => {
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .attr("class", "xAxis")
-      .attr("fill", "red")
       .call(d3.axisBottom(x).tickSize(0))
       .call(g => g.select(".domain").remove())
       .append("text")

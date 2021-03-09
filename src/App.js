@@ -4,7 +4,8 @@ import BarChart from './charts/BarChart'
 import ScatterPlot from './charts/ScatterPlot'
 
 function App() {
-  let [ loading, penguins, error ] = useAuth('/loadPenguinData')
+  const [ loading, penguins, error ] = useAuth('/loadPenguinData')
+  const [ loadingBarchart, barChartData, errorBarChart ] = useAuth('/loadBarChartData')
   
   return (
     <>
@@ -12,6 +13,9 @@ function App() {
         { loading && <div>Loading...</div> }
         { error && <div className="error">ERROR OH NO</div> }
         {penguins && <ScatterPlot data={penguins}/>}
+        { loadingBarchart && <div>Loading...</div> }
+        { errorBarChart && <div className="error">ERROR OH NO</div> }
+        {barChartData && <BarChart data={barChartData}/>}
       </div>
     </>
   )

@@ -52,6 +52,23 @@ def loadPenguinData():
     fetched_data = fetched_data.to_json(orient='records')
     return {"data":fetched_data}
 
+@app.route('/loadBarChartData')
+def loadBarChartData():
+    database_file =  'penguin_data.db'
+    conn = sqlite3.connect(database_file)
+    c = conn.cursor()
+    sql_query ='''SELECT species, body_mass_g FROM penguins'''
+    c.execute(sql_query)
+    fetched_data=c.fetchall()
+    fetched_data = pd.DataFrame(fetched_data)
+    fetched_data.columns = [
+        'species',
+        'body_mass_g'
+    ]
+    grouped_data = fetched_data.groupby('species').mean().round(2)
+    grouped_data = grouped_data.to_json()
+    return {"data":grouped_data}
+
 # this is for logging-------------------------
 if __name__ == '__main__':
     app.run()
