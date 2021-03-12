@@ -23,6 +23,32 @@ const ScatterPlot = ({data}) => {
       .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")")  
 
+    const tooltip =  d3.select(scatterPlot.current)
+    .append("div")
+      .attr("class", "tooltip")
+    
+    const showTooltip = (event, d ) => {
+      tooltip
+        .transition()
+        .duration(200)
+      tooltip
+        .style("opacity", 1)
+        .html(
+          `<strong>Species:</strong> ${d[1].species} </br> 
+          <strong>Bill Length:</strong> ${d[1].bill_length_mm}mm </br>
+          <strong>Bill Depth:</strong> ${d[1].bill_depth_mm}mm </br>`
+          )
+        .style("left", event.screenX  + "px")
+        .style("top", event.screenY + "px")
+    }
+
+    const hideTooltip = (event, d ) => {
+      tooltip
+      .transition()
+      .duration(200)
+      .style("opacity", 0)
+    }
+
     // Add X axis
     const x = d3.scaleLinear()
       .domain([0, maxX]).nice()
@@ -78,6 +104,8 @@ const ScatterPlot = ({data}) => {
       .attr("cy", d => y(d[1].bill_depth_mm))
       .attr("r", 3)
       .style("fill", d => color(d[1].species)) 
+      .on("mouseover", showTooltip)
+      .on("mouseleave", hideTooltip)
 
     // Add grid y axis
     svg.selectAll("g.yAxis g.tick")
