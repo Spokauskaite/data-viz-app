@@ -22,6 +22,31 @@ const BarChart = ({data}) => {
       .append("g")
       .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")")  
+    
+      const tooltip =  d3.select(barChart.current)
+      .append("div")
+        .attr("class", "tooltip")
+      
+    const showTooltip = (event, d ) => {
+      tooltip
+        .transition()
+        .duration(200)
+      tooltip
+        .style("opacity", 1)
+        .html(
+          `<strong>Species:</strong> ${Object.values(d)[0]} </br> 
+          <strong>Body Mass:</strong> ${Object.values(d)[1]}g </br>`
+          )
+        .style("left", event.screenX  + "px")
+        .style("top", event.screenY + "px")
+    }
+
+    const hideTooltip = (event, d ) => {
+      tooltip
+      .transition()
+      .duration(200)
+      .style("opacity", 0)
+    }
 
     // Add X axis
     const x = d3.scaleBand()
@@ -68,7 +93,9 @@ const BarChart = ({data}) => {
         .attr("width", x.bandwidth)
         .attr("y", d => y(Object.values(d)[1]))
         .attr("height", d => height - y(Object.values(d)[1]))
-        .style("fill", d => color(y(Object.values(d)[1]))) 
+        .style("fill", d => color(x(Object.values(d)[0]))) 
+        .on("mouseover", showTooltip)
+        .on("mouseleave", hideTooltip)
 
     // Add grid y axis
     svg.selectAll("g.yAxis g.tick")
@@ -86,7 +113,7 @@ const BarChart = ({data}) => {
       .attr("text-anchor", "middle")  
       .attr("fill","#595959")
       .attr("class", "plot-title") 
-      .text("Penguin Body Mass by Species")
+      .text("Average Penguin Body Mass by Species")
   }
 
   useEffect(()=>{

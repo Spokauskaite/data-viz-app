@@ -103,6 +103,7 @@ const ScatterPlot = ({data}) => {
       .attr("cx", d => x(d[1].bill_length_mm))
       .attr("cy", d => y(d[1].bill_depth_mm))
       .attr("r", 3)
+      .attr("class", "circle")
       .style("fill", d => color(d[1].species)) 
       .on("mouseover", showTooltip)
       .on("mouseleave", hideTooltip)

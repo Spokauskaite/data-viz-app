@@ -31,9 +31,15 @@
 
 .tooltip {
   position: absolute;
+  color: #595959;
   background-color: white;
-  border: 1px solid black;
+  border: 1px solid #595959;
   border-radius: 5px;
   padding: 10px;
   opacity: 0;
 }
+
+.circle:hover {
+  stroke: #595959;
+}
+
