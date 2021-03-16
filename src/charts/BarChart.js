@@ -1,5 +1,11 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
+import {
+  drawCanvas,
+  addTooltips,
+  showTooltip,
+  hideTooltip
+} from "./d3UtilityFunctions"
 
 const BarChart = ({data}) => {
   const  {body_mass_g} = data
@@ -10,42 +16,21 @@ const BarChart = ({data}) => {
     var margin = {top: 80, right:120, bottom: 60, left: 60}
     const width = 600 - margin.left - margin.right
     const height = 400 - margin.top - margin.bottom
+
     const maxY = d3.max(Object.values(body_mass_g))
     const labelMargin = 40
 
-    // Create svg
-    const svg = d3.select(barChart.current)
-      .append('svg')
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .attr('class', 'canvas')
-      .append("g")
-      .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")")  
-    
-      const tooltip =  d3.select(barChart.current)
-      .append("div")
-        .attr("class", "tooltip")
+    const svg = drawCanvas( barChart.current ) 
+    const tooltip =  addTooltips(barChart.current)
       
-    const showTooltip = (event, d ) => {
-      tooltip
-        .transition()
-        .duration(200)
-      tooltip
-        .style("opacity", 1)
-        .html(
-          `<strong>Species:</strong> ${Object.values(d)[0]} </br> 
-          <strong>Body Mass:</strong> ${Object.values(d)[1]}g </br>`
-          )
-        .style("left", event.screenX  + "px")
-        .style("top", event.screenY + "px")
+    const callShowTooltip = (event, d ) => {
+      const html = `<strong>Species:</strong> ${Object.values(d)[0]} </br> 
+                          <strong>Body Mass:</strong> ${Object.values(d)[1]}g </br>`
+      showTooltip(barChart.current, html, event.screenX ,event.screenY )
     }
 
-    const hideTooltip = (event, d ) => {
-      tooltip
-      .transition()
-      .duration(200)
-      .style("opacity", 0)
+    const callHideTooltip = () => {
+      hideTooltip(barChart.current)
     }
 
     // Add X axis
@@ -94,8 +79,8 @@ const BarChart = ({data}) => {
         .attr("y", d => y(Object.values(d)[1]))
         .attr("height", d => height - y(Object.values(d)[1]))
         .style("fill", d => color(x(Object.values(d)[0]))) 
-        .on("mouseover", showTooltip)
-        .on("mouseleave", hideTooltip)
+        .on("mouseover", callShowTooltip)
+        .on("mouseleave", callHideTooltip)
 
     // Add grid y axis
     svg.selectAll("g.yAxis g.tick")

@@ -1,52 +1,34 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
+import {
+  drawCanvas,
+  addTooltips,
+  showTooltip,
+  hideTooltip
+} from "./d3UtilityFunctions"
 
 const ScatterPlot = ({data}) => {
   const scatterPlot = useRef(null)
   const drawScatterPlot = (data) => {
-
     // set parameters
     var margin = {top: 80, right:120, bottom: 60, left: 60}
-    const width = 600 - margin.left - margin.right
-    const height = 400 - margin.top - margin.bottom
+const width = 600 - margin.left - margin.right
+const height = 400 - margin.top - margin.bottom
     const maxX = d3.max( data.map( d => d.bill_length_mm ))
     const maxY = d3.max( data.map( d => d.bill_depth_mm ))
     const labelMargin = 30
+    const svg = drawCanvas( scatterPlot.current ) 
+    const tooltip =  addTooltips(scatterPlot.current)
 
-    // Create svg
-    const svg = d3.select(scatterPlot.current)
-      .append('svg')
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .attr('class', 'canvas')
-      .append("g")
-      .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")")  
-
-    const tooltip =  d3.select(scatterPlot.current)
-    .append("div")
-      .attr("class", "tooltip")
-    
-    const showTooltip = (event, d ) => {
-      tooltip
-        .transition()
-        .duration(200)
-      tooltip
-        .style("opacity", 1)
-        .html(
-          `<strong>Species:</strong> ${d[1].species} </br> 
-          <strong>Bill Length:</strong> ${d[1].bill_length_mm}mm </br>
-          <strong>Bill Depth:</strong> ${d[1].bill_depth_mm}mm </br>`
-          )
-        .style("left", event.screenX  + "px")
-        .style("top", event.screenY + "px")
+    const callShowTooltip = (event, d) => {
+      const html = `<strong>Species:</strong> ${d[1].species} </br> 
+                    <strong>Bill Length:</strong> ${d[1].bill_length_mm}mm </br>
+                    <strong>Bill Depth:</strong> ${d[1].bill_depth_mm}mm </br>`
+      showTooltip(scatterPlot.current, html, event.screenX ,event.screenY )
     }
 
-    const hideTooltip = (event, d ) => {
-      tooltip
-      .transition()
-      .duration(200)
-      .style("opacity", 0)
+    const callHideTooltip = () => {
+      hideTooltip(scatterPlot.current)
     }
 
     // Add X axis
@@ -105,8 +87,8 @@ const ScatterPlot = ({data}) => {
       .attr("r", 3)
       .attr("class", "circle")
       .style("fill", d => color(d[1].species)) 
-      .on("mouseover", showTooltip)
-      .on("mouseleave", hideTooltip)
+        .on("mouseover", callShowTooltip)
+        .on("mouseleave", callHideTooltip)
 
     // Add grid y axis
     svg.selectAll("g.yAxis g.tick")
@@ -165,6 +147,7 @@ const ScatterPlot = ({data}) => {
       .attr("fill","#595959")
       .attr("class", "plot-title") 
       .text("Penguin Bill Size by Species")
+      
   }
 
   useEffect(()=>{
