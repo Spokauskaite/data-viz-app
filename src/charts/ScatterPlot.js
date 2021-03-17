@@ -1,22 +1,39 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import {
+  margin,
+  width,
+  height,
   drawCanvas,
   addTooltips,
   showTooltip,
-  hideTooltip
+  hideTooltip,
+  addXAxis,
+  addYAxis
 } from "./d3UtilityFunctions"
 
 const ScatterPlot = ({data}) => {
   const scatterPlot = useRef(null)
+
   const drawScatterPlot = (data) => {
-    // set parameters
-    var margin = {top: 80, right:120, bottom: 60, left: 60}
-const width = 600 - margin.left - margin.right
-const height = 400 - margin.top - margin.bottom
     const maxX = d3.max( data.map( d => d.bill_length_mm ))
     const maxY = d3.max( data.map( d => d.bill_depth_mm ))
     const labelMargin = 30
+
+    // scale
+    const x = d3.scaleLinear()
+      .domain([0, maxX]).nice()
+      .range([ 0, width ])
+    const y = d3.scaleLinear()
+      .domain([0, maxY]).nice()
+      .range([ height, 0])
+    const color = d3.scaleOrdinal()
+      .domain(data.map(d => d.species))
+      .range(d3.schemeCategory10)
+    const shape = d3.scaleOrdinal()
+      .domain(data.map(d => d.species))
+      .range(d3.symbols.map(s => d3.symbol().type(s)()))
+
     const svg = drawCanvas( scatterPlot.current ) 
     const tooltip =  addTooltips(scatterPlot.current)
 
@@ -31,50 +48,9 @@ const height = 400 - margin.top - margin.bottom
       hideTooltip(scatterPlot.current)
     }
 
-    // Add X axis
-    const x = d3.scaleLinear()
-      .domain([0, maxX]).nice()
-      .range([ 0, width ])
-    svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .attr("class", "xAxis")
-      .call(d3.axisBottom(x).tickSize(0))
-      .call(g => g.select(".domain").remove())
-      .append("text")
-      .attr("y", labelMargin)
-      .attr("x", x(maxX)-labelMargin)
-      .attr("fill", "#595959")
-      .text("Bill Length (mm)")
-    
-    // Add Y axis
-    const y = d3.scaleLinear()
-      .domain([0, maxY]).nice()
-      .range([ height, 0])
-    svg.append("g")
-      .attr("class", "yAxis")
-      .call(d3.axisLeft(y).tickSize(0))
-      .call(g => g.select(".domain").remove())
-      .append("text")
-      .attr("y", -labelMargin)
-      .attr("x", y(maxY)-labelMargin)
-      .attr("transform", "rotate(-90)")
-      .attr("fill", "#595959")
-      .text("Bill Depth (mm)")
+    addXAxis( scatterPlot.current, x , labelMargin, "Bill Length (mm)", maxX )
+    addYAxis( scatterPlot.current, y , labelMargin, "Bill Depth (mm)" , maxY)
 
-    svg.selectAll(".tick text")
-      .attr("fill","#595959")
-      svg.select(".yAxis .tick text")
-    .attr("fill","none")
-
-    // Add colors
-    const color = d3.scaleOrdinal()
-      .domain(data.map(d => d.species))
-      .range(d3.schemeCategory10)
-    // Add shape
-    const shape = d3.scaleOrdinal()
-      .domain(data.map(d => d.species))
-      .range(d3.symbols.map(s => d3.symbol().type(s)()))
-    
     // Add dots
     const dataPoints = Object.entries(data)
     svg.append('g')
