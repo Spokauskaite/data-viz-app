@@ -10,7 +10,7 @@ import sqlite3
 import seaborn as sns
 
 # change dir
-db_path = 'C:/Users/Lina/Desktop/data-viz-app/api'
+db_path = '.'
 os.chdir(db_path)
 
 # create DB
@@ -23,8 +23,7 @@ with open(db_file_path, 'w'):
 conn = sqlite3.connect(db_file_path)
 c = conn.cursor()
 
-# ----------- CREATE FOOD TABLE -----------------------------------------------
-
+# ----------- CREATE FOOD TABLE ---------------
 # Load as a dataframe
 df = sns.load_dataset('penguins')
 df = df.dropna()
@@ -42,13 +41,17 @@ sql_query = '''CREATE TABLE penguins
 c.execute(sql_query)
 
 # store penguin data
-c.executemany('INSERT INTO penguins VALUES (?,?,?,?,?,?,?)', value_list)
+c.executemany(
+    '''INSERT INTO penguins 
+    VALUES (?,?,?,?,?,?,?)''', 
+    value_list
+)
 
 # test
 c.execute('SELECT * FROM penguins ')
 print (c.fetchone())
 
-#--------------------Close connection------------------------------------------
+#------Close connection-------
 
 # save changes
 conn.commit()

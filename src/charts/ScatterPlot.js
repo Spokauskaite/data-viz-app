@@ -1,14 +1,17 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import {
-  margin,
   width,
   height,
   drawCanvas,
-  addTooltips,
+  addTitle,
   addXAxis,
   addYAxis,
-  addDataPointsToScatterPlot
+  addGridToXAxis,
+  addGridToYAxis,
+  addDataPointsToScatterPlot,
+  addTooltips,
+  addScatterPlotLegend
 } from "./d3UtilityFunctions"
 
 const ScatterPlot = ({data}) => {
@@ -18,6 +21,10 @@ const ScatterPlot = ({data}) => {
     const thisChart = scatterPlot.current
     const maxX = d3.max( data.map( d => d.bill_length_mm ))
     const maxY = d3.max( data.map( d => d.bill_depth_mm ))
+    const dataPoints = Object.entries(data)
+    const tooltipText = `\`<strong>Species:</strong> \${d[1].species} </br> 
+                        <strong>Bill Length:</strong> \${d[1].bill_length_mm}mm </br>
+                        <strong>Bill Depth:</strong> \${d[1].bill_depth_mm}mm </br>\``
     const labelMargin = 30
     const r = 3
 
@@ -35,17 +42,12 @@ const ScatterPlot = ({data}) => {
       .domain(data.map(d => d.species))
       .range(d3.symbols.map(s => d3.symbol().type(s)()))
 
-    const svg = drawCanvas( thisChart ) 
-  
+    drawCanvas( thisChart ) 
+    addTitle(thisChart, "Penguin Bill Size by Species")
     addXAxis( thisChart, x , labelMargin, "Bill Length (mm)", maxX )
     addYAxis( thisChart, y , labelMargin, "Bill Depth (mm)" , maxY)
-    addTooltips(thisChart)
-
-    const tooltipText = `\`<strong>Species:</strong> \${d[1].species} </br> 
-                      <strong>Bill Length:</strong> \${d[1].bill_length_mm}mm </br>
-                      <strong>Bill Depth:</strong> \${d[1].bill_depth_mm}mm </br>\``
-
-    const dataPoints = Object.entries(data)
+    addGridToXAxis(thisChart)
+    addGridToYAxis(thisChart)
     addDataPointsToScatterPlot( 
       thisChart, 
       dataPoints, 
@@ -55,65 +57,8 @@ const ScatterPlot = ({data}) => {
       color,
       tooltipText
     )
-
-    // Add grid y axis
-    svg.selectAll("g.yAxis g.tick")
-      .append("line")
-      .attr("class", "gridline")
-      .attr("x1", 0)
-      .attr("y1", 0)
-      .attr("x2", width)
-      .attr("y2", 0)
-
-    // Add grid x axis
-    svg.selectAll("g.xAxis g.tick")
-      .append("line")
-      .attr("class", "gridline")
-      .attr("x1", 0)
-      .attr("y1", -height)
-      .attr("x2", 0)
-      .attr("y2", 0)
-
-    // Add legend
-    svg.append("text")
-      .attr("x", (width+20))             
-      .attr("y", 10)
-      .attr("fill", "#595959")
-      .attr("class", "legend-title") 
-      .text("Species")
-
-    const legend = svg.selectAll(".legend")
-      .data(color.domain())
-      .enter().append("g")
-      .attr("class", "legend")
-      .attr("fill","#595959")
-      .attr("transform", (d, i) => "translate(0," + i * 20  + ")" )
-
-    // Add legend circles
-    legend.append("circle")
-      .attr("cx", width+20)
-      .attr("cy", 30)
-      .attr("r", 5)
-      .style("fill", color)
-
-    // Add legend text
-    legend.append("text")
-      .attr("x", width+30)
-      .attr("y",30)
-      .attr("dy", ".35em")
-      .attr("fill","#595959")
-      .attr("class",'legend-text')
-      .text( d => d)
-    
-    // Add Title
-    svg.append("text")
-      .attr("x", (width / 2))             
-      .attr("y", 0 - (margin.top / 2))
-      .attr("text-anchor", "middle")  
-      .attr("fill","#595959")
-      .attr("class", "plot-title") 
-      .text("Penguin Bill Size by Species")
-      
+    addTooltips(thisChart)
+    addScatterPlotLegend(thisChart, color)  
   }
 
   useEffect(()=>{

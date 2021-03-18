@@ -17,6 +17,17 @@ export const drawCanvas = (ref) =>{
   return svg
 }
 
+export const addTitle = (ref) => {
+  d3.select(ref).select('svg').select('g')
+    .append("text")
+    .attr("x", (width / 2))             
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "middle")  
+    .attr("fill","#595959")
+    .attr("class", "plot-title") 
+    .text("Penguin Bill Size by Species")
+}
+
 export const addXAxis = ( ref, x , labelMargin, label, maxX ) => {
   const xAxis = d3.select(ref).select('svg').select('g')
     .append("g")
@@ -56,35 +67,27 @@ export const addYAxis = ( ref, y , labelMargin, label , maxY) => {
     .attr("fill","none")
 }
 
-export const addTooltips = (ref) =>{
-  const tooltip =  d3.select(ref)
-    .append("div")
-    .attr("class", "tooltip")
-  return tooltip
+export const addGridToXAxis = (ref) => {
+  d3.select(ref).selectAll("g.xAxis g.tick")
+    .append("line")
+    .attr("class", "gridline")
+    .attr("x1", 0)
+    .attr("y1", -height)
+    .attr("x2", 0)
+    .attr("y2", 0)
 }
 
-export const showTooltip = (ref, d, tooltipText, left, top) => {
-  const tooltip = d3.select(ref).select("div.tooltip")
-  tooltip
-    .transition()
-    .duration(200)
-  tooltip
-    .style("opacity", 1)
-    .html(eval(tooltipText))
-    .style("left", `${left}px`)
-    .style("top", `${top}px`)
-}
-
-export const hideTooltip = (ref) => {
-  const tooltip = d3.select(ref).select("div.tooltip")
-  tooltip
-    .transition()
-    .duration(200)
-    .style("opacity", 0)
+export const addGridToYAxis = (ref) => {
+  d3.select(ref).selectAll("g.yAxis g.tick")
+    .append("line")
+    .attr("class", "gridline")
+    .attr("x1", 0)
+    .attr("y1", 0)
+    .attr("x2", width)
+    .attr("y2", 0)
 }
 
 export const addDataPointsToScatterPlot = (ref, data, x, y, r,  color, tooltipText) => {
-
   const callShowTooltip = (event, d) => {
     showTooltip(ref, d, tooltipText, event.screenX ,event.screenY )
   }
@@ -131,3 +134,64 @@ export const addRectanglesToBarChart = (ref, data, x, y,  color, tooltipText) =>
     .on("mouseover", callShowTooltip)
     .on("mouseleave", callHideTooltip)
 }
+
+export const addTooltips = (ref) =>{
+  const tooltip =  d3.select(ref)
+    .append("div")
+    .attr("class", "tooltip")
+  return tooltip
+}
+
+export const showTooltip = (ref, d, tooltipText, left, top) => {
+  const tooltip = d3.select(ref).select("div.tooltip")
+  tooltip
+    .transition()
+    .duration(200)
+  tooltip
+    .style("opacity", 1)
+    .html(eval(tooltipText))
+    .style("left", `${left}px`)
+    .style("top", `${top}px`)
+}
+
+export const hideTooltip = (ref) => {
+  const tooltip = d3.select(ref).select("div.tooltip")
+  tooltip
+    .transition()
+    .duration(200)
+    .style("opacity", 0)
+}
+
+export const addScatterPlotLegend =  (ref, color) => {
+  const svg = d3.select(ref).select('svg').select('g')
+  svg.append("text")
+      .attr("x", (width+20))             
+      .attr("y", 10)
+      .attr("fill", "#595959")
+      .attr("class", "legend-title") 
+      .text("Species")
+
+    const legend = svg.selectAll(".legend")
+      .data(color.domain())
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("fill","#595959")
+      .attr("transform", (d, i) => "translate(0," + i * 20  + ")" )
+
+    // Add legend circles
+    legend.append("circle")
+      .attr("cx", width+20)
+      .attr("cy", 30)
+      .attr("r", 5)
+      .style("fill", color)
+
+    // Add legend text
+    legend.append("text")
+      .attr("x", width+30)
+      .attr("y",30)
+      .attr("dy", ".35em")
+      .attr("fill","#595959")
+      .attr("class",'legend-text')
+      .text( d => d)
+}
+    
