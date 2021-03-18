@@ -6,10 +6,9 @@ import {
   height,
   drawCanvas,
   addTooltips,
-  showTooltip,
-  hideTooltip,
   addXAxis,
-  addYAxis
+  addYAxis,
+  addRectanglesToBarChart
 } from "./d3UtilityFunctions"
 
 const BarChart = ({data}) => {
@@ -32,35 +31,24 @@ const BarChart = ({data}) => {
       .range(d3.schemeCategory10.slice(0,3))
 
     const svg = drawCanvas( barChart.current ) 
-    const tooltip =  addTooltips(barChart.current)
-      
-    const callShowTooltip = (event, d ) => {
-      const html = `<strong>Species:</strong> ${Object.values(d)[0]} </br> 
-                    <strong>Body Mass:</strong> ${Object.values(d)[1]}g </br>`
-      showTooltip(barChart.current, html, event.screenX ,event.screenY )
-    }
-
-    const callHideTooltip = () => {
-      hideTooltip(barChart.current)
-    }
 
     addXAxis( barChart.current, x , labelMargin, "Bill Length (mm)" )
     addYAxis( barChart.current, y , labelMargin, "Body  Mass (g)" , maxY)
 
-
+    const tooltip =  addTooltips(barChart.current)
+    let tooltipText = `\`<strong>Species:</strong> \${Object.values(d)[0]} </br> 
+                      <strong>Body Mass:</strong> \${Object.values(d)[1]}g </br>\``
 
     // Add bars
     const dataPoints = Object.entries(body_mass_g)
-    svg.selectAll("rect")
-      .data(dataPoints)
-      .enter().append("rect")
-        .attr("x", d =>  x(Object.values(d)[0]))
-        .attr("width", x.bandwidth)
-        .attr("y", d => y(Object.values(d)[1]))
-        .attr("height", d => height - y(Object.values(d)[1]))
-        .style("fill", d => color(x(Object.values(d)[0]))) 
-        .on("mouseover", callShowTooltip)
-        .on("mouseleave", callHideTooltip)
+    addRectanglesToBarChart( 
+      barChart.current, 
+      dataPoints, 
+      x, 
+      y,
+      color,
+      tooltipText
+    )
 
     // Add grid y axis
     svg.selectAll("g.yAxis g.tick")

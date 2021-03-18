@@ -6,10 +6,9 @@ import {
   height,
   drawCanvas,
   addTooltips,
-  showTooltip,
-  hideTooltip,
   addXAxis,
-  addYAxis
+  addYAxis,
+  addDataPointsToScatterPlot
 } from "./d3UtilityFunctions"
 
 const ScatterPlot = ({data}) => {
@@ -19,6 +18,7 @@ const ScatterPlot = ({data}) => {
     const maxX = d3.max( data.map( d => d.bill_length_mm ))
     const maxY = d3.max( data.map( d => d.bill_depth_mm ))
     const labelMargin = 30
+    const r = 3
 
     // scale
     const x = d3.scaleLinear()
@@ -35,36 +35,29 @@ const ScatterPlot = ({data}) => {
       .range(d3.symbols.map(s => d3.symbol().type(s)()))
 
     const svg = drawCanvas( scatterPlot.current ) 
-    const tooltip =  addTooltips(scatterPlot.current)
-
-    const callShowTooltip = (event, d) => {
-      const html = `<strong>Species:</strong> ${d[1].species} </br> 
-                    <strong>Bill Length:</strong> ${d[1].bill_length_mm}mm </br>
-                    <strong>Bill Depth:</strong> ${d[1].bill_depth_mm}mm </br>`
-      showTooltip(scatterPlot.current, html, event.screenX ,event.screenY )
-    }
-
-    const callHideTooltip = () => {
-      hideTooltip(scatterPlot.current)
-    }
-
+  
     addXAxis( scatterPlot.current, x , labelMargin, "Bill Length (mm)", maxX )
     addYAxis( scatterPlot.current, y , labelMargin, "Bill Depth (mm)" , maxY)
 
-    // Add dots
+    const tooltip =  addTooltips(scatterPlot.current)
+    let tooltipText = `\`<strong>Species:</strong> \${d[1].species} </br> 
+                      <strong>Bill Length:</strong> \${d[1].bill_length_mm}mm </br>
+                      <strong>Bill Depth:</strong> \${d[1].bill_depth_mm}mm </br>\``
+
     const dataPoints = Object.entries(data)
-    svg.append('g')
-      .selectAll("dot")
-      .data(dataPoints)
-      .enter()
-      .append("circle")
-      .attr("cx", d => x(d[1].bill_length_mm))
-      .attr("cy", d => y(d[1].bill_depth_mm))
-      .attr("r", 3)
-      .attr("class", "circle")
-      .style("fill", d => color(d[1].species)) 
-        .on("mouseover", callShowTooltip)
-        .on("mouseleave", callHideTooltip)
+    addDataPointsToScatterPlot( 
+      scatterPlot.current, 
+      dataPoints, 
+      x, 
+      y,
+      r, 
+      color,
+      tooltipText
+    )
+
+    
+  
+    
 
     // Add grid y axis
     svg.selectAll("g.yAxis g.tick")

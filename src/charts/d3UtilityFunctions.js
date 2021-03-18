@@ -17,35 +17,6 @@ export const drawCanvas = (ref) =>{
   return svg
 }
 
-export const addTooltips = (ref) =>{
-  const tooltip =  d3.select(ref)
-    .append("div")
-    .attr("class", "tooltip")
-  return tooltip
-}
-
-export const showTooltip = (ref,html,left,top) => {
-  const tooltip = d3.select(ref).select("div.tooltip")
-  tooltip
-    .transition()
-    .duration(200)
-  tooltip
-    .style("opacity", 1)
-    .html(
-      html
-      )
-    .style("left", `${left}px`)
-    .style("top", `${top}px`)
-}
-
-export const hideTooltip = (ref) => {
-  const tooltip = d3.select(ref).select("div.tooltip")
-  tooltip
-    .transition()
-    .duration(200)
-    .style("opacity", 0)
-}
-
 export const addXAxis = ( ref, x , labelMargin, label, maxX ) => {
   const xAxis = d3.select(ref).select('svg').select('g')
     .append("g")
@@ -83,4 +54,80 @@ export const addYAxis = ( ref, y , labelMargin, label , maxY) => {
     .attr("fill","#595959")
   yAxis.select(".yAxis .tick text")
     .attr("fill","none")
+}
+
+export const addTooltips = (ref) =>{
+  const tooltip =  d3.select(ref)
+    .append("div")
+    .attr("class", "tooltip")
+  return tooltip
+}
+
+export const showTooltip = (ref, d, tooltipText, left, top) => {
+  const tooltip = d3.select(ref).select("div.tooltip")
+  tooltip
+    .transition()
+    .duration(200)
+  tooltip
+    .style("opacity", 1)
+    .html(eval(tooltipText))
+    .style("left", `${left}px`)
+    .style("top", `${top}px`)
+}
+
+export const hideTooltip = (ref) => {
+  const tooltip = d3.select(ref).select("div.tooltip")
+  tooltip
+    .transition()
+    .duration(200)
+    .style("opacity", 0)
+}
+
+export const addDataPointsToScatterPlot = (ref, data, x, y, r,  color, tooltipText) => {
+
+  const callShowTooltip = (event, d) => {
+    showTooltip(ref, d, tooltipText, event.screenX ,event.screenY )
+  }
+
+  const callHideTooltip = () => {
+    hideTooltip(ref)
+  }
+
+  d3.select(ref).select('svg').select('g')
+  .append('g')
+  .selectAll("dot")
+  .data(data)
+  .enter()
+  .append("circle")
+  .attr("cx", d => x(d[1].bill_length_mm))
+  .attr("cy", d => y(d[1].bill_depth_mm))
+  .attr("r", r)
+  .attr("class", "circle")
+  .style("fill", d => color(d[1].species)) 
+  .on("mouseover", callShowTooltip)
+  .on("mouseleave", callHideTooltip)
+}
+
+export const addRectanglesToBarChart = (ref, data, x, y,  color, tooltipText) => {
+
+  const callShowTooltip = (event, d) => {
+    showTooltip(ref, d, tooltipText, event.screenX ,event.screenY )
+  }
+
+  const callHideTooltip = () => {
+    hideTooltip(ref)
+  }
+
+  d3.select(ref).select('svg').select('g')
+    .append('g')
+    .selectAll("rect")
+    .data(data)
+    .enter().append("rect")
+    .attr("x", d =>  x(Object.values(d)[0]))
+    .attr("width", x.bandwidth)
+    .attr("y", d => y(Object.values(d)[1]))
+    .attr("height", d => height - y(Object.values(d)[1]))
+    .style("fill", d => color(x(Object.values(d)[0]))) 
+    .on("mouseover", callShowTooltip)
+    .on("mouseleave", callHideTooltip)
 }
