@@ -87,7 +87,15 @@ export const addGridToYAxis = (ref) => {
     .attr("y2", 0)
 }
 
-export const addDataPointsToScatterPlot = (ref, data, x, y, r,  color, tooltipText) => {
+export const addDataPointsToScatterPlot = (
+  ref, 
+  data, 
+  x, 
+  y, 
+  r,  
+  color, 
+  tooltipText
+) => {
   const callShowTooltip = (event, d) => {
     showTooltip(ref, d, tooltipText, event.screenX ,event.screenY )
   }
@@ -111,7 +119,14 @@ export const addDataPointsToScatterPlot = (ref, data, x, y, r,  color, tooltipTe
   .on("mouseleave", callHideTooltip)
 }
 
-export const addRectanglesToBarChart = (ref, data, x, y,  color, tooltipText) => {
+export const addRectanglesToBarChart = (
+  ref, 
+  data, 
+  x, 
+  y,  
+  color, 
+  tooltipText
+) => {
 
   const callShowTooltip = (event, d) => {
     showTooltip(ref, d, tooltipText, event.screenX ,event.screenY )
