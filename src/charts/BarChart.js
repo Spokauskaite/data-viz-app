@@ -15,7 +15,8 @@ const BarChart = ({data}) => {
   const  {body_mass_g} = data
   const barChart = useRef(null)
 
-  const drawBarChart = (data) => {
+  const drawBarChart = () => {
+    const thisChart = barChart.current
     const maxY = d3.max(Object.values(body_mass_g))
     const labelMargin = 40
     //scale
@@ -30,19 +31,18 @@ const BarChart = ({data}) => {
       .domain(Object.keys(body_mass_g))
       .range(d3.schemeCategory10.slice(0,3))
 
-    const svg = drawCanvas( barChart.current ) 
+    const svg = drawCanvas(thisChart) 
 
-    addXAxis( barChart.current, x , labelMargin, "Bill Length (mm)" )
-    addYAxis( barChart.current, y , labelMargin, "Body  Mass (g)" , maxY)
+    addXAxis( thisChart, x , labelMargin, "Bill Length (mm)" )
+    addYAxis( thisChart, y , labelMargin, "Body  Mass (g)" , maxY)
+    addTooltips(thisChart)
 
-    const tooltip =  addTooltips(barChart.current)
-    let tooltipText = `\`<strong>Species:</strong> \${Object.values(d)[0]} </br> 
+    const tooltipText = `\`<strong>Species:</strong> \${Object.values(d)[0]} </br> 
                       <strong>Body Mass:</strong> \${Object.values(d)[1]}g </br>\``
 
-    // Add bars
     const dataPoints = Object.entries(body_mass_g)
     addRectanglesToBarChart( 
-      barChart.current, 
+      thisChart, 
       dataPoints, 
       x, 
       y,

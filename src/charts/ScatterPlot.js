@@ -14,7 +14,8 @@ import {
 const ScatterPlot = ({data}) => {
   const scatterPlot = useRef(null)
 
-  const drawScatterPlot = (data) => {
+  const drawScatterPlot = () => {
+    const thisChart = scatterPlot.current
     const maxX = d3.max( data.map( d => d.bill_length_mm ))
     const maxY = d3.max( data.map( d => d.bill_depth_mm ))
     const labelMargin = 30
@@ -34,19 +35,19 @@ const ScatterPlot = ({data}) => {
       .domain(data.map(d => d.species))
       .range(d3.symbols.map(s => d3.symbol().type(s)()))
 
-    const svg = drawCanvas( scatterPlot.current ) 
+    const svg = drawCanvas( thisChart ) 
   
-    addXAxis( scatterPlot.current, x , labelMargin, "Bill Length (mm)", maxX )
-    addYAxis( scatterPlot.current, y , labelMargin, "Bill Depth (mm)" , maxY)
+    addXAxis( thisChart, x , labelMargin, "Bill Length (mm)", maxX )
+    addYAxis( thisChart, y , labelMargin, "Bill Depth (mm)" , maxY)
+    addTooltips(thisChart)
 
-    const tooltip =  addTooltips(scatterPlot.current)
-    let tooltipText = `\`<strong>Species:</strong> \${d[1].species} </br> 
+    const tooltipText = `\`<strong>Species:</strong> \${d[1].species} </br> 
                       <strong>Bill Length:</strong> \${d[1].bill_length_mm}mm </br>
                       <strong>Bill Depth:</strong> \${d[1].bill_depth_mm}mm </br>\``
 
     const dataPoints = Object.entries(data)
     addDataPointsToScatterPlot( 
-      scatterPlot.current, 
+      thisChart, 
       dataPoints, 
       x, 
       y,
@@ -54,10 +55,6 @@ const ScatterPlot = ({data}) => {
       color,
       tooltipText
     )
-
-    
-  
-    
 
     // Add grid y axis
     svg.selectAll("g.yAxis g.tick")
