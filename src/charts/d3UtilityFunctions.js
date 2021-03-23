@@ -106,6 +106,7 @@ export const addDataPointsToScatterPlot = (
 
   d3.select(ref).select('svg').select('g')
   .append('g')
+  .attr("class", "scatter")
   .selectAll("dot")
   .data(data)
   .enter()
@@ -175,6 +176,72 @@ export const hideTooltip = (ref) => {
     .transition()
     .duration(200)
     .style("opacity", 0)
+}
+
+export const addZoomIn = (ref, data, x, y, maxX, maxY) => {
+  let idleTimeout
+  const idleDelay = 350
+  const clip = d3.select(ref).select('svg')
+    .append("defs").append("svg:clipPath")
+      .attr("id", "clip")
+      .append("svg:rect")
+      .attr("width", width )
+      .attr("height", height )
+      .attr("x", 0) 
+      .attr("y", 0)
+
+  const scatter = d3.select(ref)
+    .select('svg')
+    .select('g')
+    .select('g.scatter')
+    .attr("id", "scatterplot")
+    .attr("clip-path", "url(#clip)")
+
+  const idled = () => {
+    idleTimeout = null
+  }
+
+  const zoom = () => {
+    d3.select(ref).select('g.xAxis')
+      .transition()  
+      .duration(750)
+      .call(d3.axisBottom(x).tickSize(0))
+      .call(g => g.select(".domain").remove())
+    d3.select(ref).select('svg').select('g.yAxis')
+      .transition()  
+      .duration(750)
+      .call(d3.axisLeft(y).tickSize(0))
+      .call(g => g.select(".domain").remove())
+
+    scatter.selectAll("circle")
+      .transition()  
+      .duration(750)
+      .attr("cx", d => x(d[1].bill_length_mm))
+      .attr("cy", d => y(d[1].bill_depth_mm))
+      
+  } 
+  const brushended = (event) => {
+    var s = event.selection
+    if (!s) {
+        if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay)
+        x.domain([0, maxX]).nice()
+        y.domain([0, maxY]).nice()
+    } else {
+        x.domain([s[0][0], s[1][0]].map(x.invert, x))
+        y.domain([s[1][1], s[0][1]].map(y.invert, y))
+        scatter.select(".brush").call(brush.move, null)
+    }
+    zoom()
+  }
+
+  const brush = d3.brush()
+    .extent([[0, 0], [width, height]])
+    .on("end", brushended)
+
+  scatter.append("g")
+    .attr("class", "brush")
+    .call(brush)
+
 }
 
 export const addScatterPlotLegend =  (ref, color) => {

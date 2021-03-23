@@ -11,6 +11,7 @@ import {
   addGridToYAxis,
   addDataPointsToScatterPlot,
   addTooltips,
+  addZoomIn,
   addScatterPlotLegend
 } from "./d3UtilityFunctions"
 
@@ -42,10 +43,10 @@ const ScatterPlot = ({data}) => {
       .domain(data.map(d => d.species))
       .range(d3.symbols.map(s => d3.symbol().type(s)()))
 
-    drawCanvas( thisChart ) 
+    drawCanvas(thisChart) 
     addTitle(thisChart, "Penguin Bill Size by Species")
-    addXAxis( thisChart, x , labelMargin, "Bill Length (mm)", maxX )
-    addYAxis( thisChart, y , labelMargin, "Bill Depth (mm)" , maxY)
+    addXAxis(thisChart, x , labelMargin, "Bill Length (mm)", maxX )
+    addYAxis(thisChart, y , labelMargin, "Bill Depth (mm)" , maxY)
     addGridToXAxis(thisChart)
     addGridToYAxis(thisChart)
     addDataPointsToScatterPlot( 
@@ -58,6 +59,7 @@ const ScatterPlot = ({data}) => {
       tooltipText
     )
     addTooltips(thisChart)
+    addZoomIn(thisChart, dataPoints, x, y, maxX, maxY)
     addScatterPlotLegend(thisChart, color)  
   }
 
