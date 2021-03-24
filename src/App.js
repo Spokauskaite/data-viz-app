@@ -7,7 +7,8 @@ function App() {
   return (
     <>
       <div className='main-page'>
-        <ScatterPlot api='/loadPenguinData'/>
+        <ScatterPlot api='/loadPenguinData' zoom={false}/>
+        <ScatterPlot api='/loadPenguinData' zoom={true}/>
         <BarChart api='/loadBarChartData'/>
       </div>
     </>

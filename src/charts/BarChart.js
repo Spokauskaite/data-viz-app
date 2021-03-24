@@ -24,7 +24,7 @@ const BarChart = ({api}) => {
     const dataPoints = Object.entries(body_mass_g)
     const tooltipText = `\`<strong>Species:</strong> \${Object.values(d)[0]} </br> 
                         <strong>Body Mass:</strong> \${Object.values(d)[1]}g </br>\``
-    const labelMargin = 40
+
     //scale
     const x = d3.scaleBand()
       .domain(Object.keys(body_mass_g))
@@ -39,8 +39,8 @@ const BarChart = ({api}) => {
       
     drawCanvas(thisChart) 
     addTitle(thisChart, "Average Penguin Body Mass by Species")
-    addXAxis( thisChart, x , labelMargin, "Bill Length (mm)" )
-    addYAxis( thisChart, y , labelMargin, "Body  Mass (g)" , maxY)
+    addXAxis( thisChart, x , "Bill Length (mm)" )
+    addYAxis( thisChart, y , "Body  Mass (g)" , maxY)
     addGridToYAxis(thisChart)
     addRectanglesToBarChart( 
       thisChart, 

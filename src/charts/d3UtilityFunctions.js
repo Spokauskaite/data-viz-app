@@ -3,6 +3,7 @@ import * as d3 from 'd3'
 export const margin = {top: 80, right:120, bottom: 60, left: 60}
 export const width = 600 - margin.left - margin.right
 export const height = 400 - margin.top - margin.bottom
+const labelMargin = 40
 
 export const drawCanvas = (ref) =>{
   // Create svg
@@ -28,7 +29,7 @@ export const addTitle = (ref) => {
     .text("Penguin Bill Size by Species")
 }
 
-export const addXAxis = ( ref, x , labelMargin, label, maxX ) => {
+export const addXAxis = ( ref, x , label, maxX ) => {
   const xAxis = d3.select(ref).select('svg').select('g')
     .append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -48,7 +49,7 @@ export const addXAxis = ( ref, x , labelMargin, label, maxX ) => {
     .attr("fill","#595959")
 }  
 
-export const addYAxis = ( ref, y , labelMargin, label , maxY) => {
+export const addYAxis = ( ref, y , label , maxY) => {
   const yAxis = d3.select(ref).select('svg').select('g')
     .append("g")
     .attr("class", "yAxis")

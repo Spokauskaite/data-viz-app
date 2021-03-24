@@ -16,7 +16,7 @@ import {
   addScatterPlotLegend
 } from "./d3UtilityFunctions"
 
-const ScatterPlot = ({api}) => {
+const ScatterPlot = ({api, zoom}) => {
   const [ loading, data, error ] = useAuth(api)
   const scatterPlot = useRef(null)
 
@@ -28,7 +28,6 @@ const ScatterPlot = ({api}) => {
     const tooltipText = `\`<strong>Species:</strong> \${d[1].species} </br> 
                         <strong>Bill Length:</strong> \${d[1].bill_length_mm}mm </br>
                         <strong>Bill Depth:</strong> \${d[1].bill_depth_mm}mm </br>\``
-    const labelMargin = 30
     const r = 3
 
     // scale
@@ -47,8 +46,8 @@ const ScatterPlot = ({api}) => {
 
     drawCanvas(thisChart) 
     addTitle(thisChart, "Penguin Bill Size by Species")
-    addXAxis(thisChart, x , labelMargin, "Bill Length (mm)", maxX )
-    addYAxis(thisChart, y , labelMargin, "Bill Depth (mm)" , maxY)
+    addXAxis(thisChart, x , "Bill Length (mm)", maxX )
+    addYAxis(thisChart, y , "Bill Depth (mm)" , maxY)
     addGridToXAxis(thisChart)
     addGridToYAxis(thisChart)
     addDataPointsToScatterPlot( 
@@ -61,7 +60,7 @@ const ScatterPlot = ({api}) => {
       tooltipText
     )
     addTooltips(thisChart)
-    addZoomIn(thisChart, dataPoints, x, y, maxX, maxY)
+    zoom && addZoomIn(thisChart, dataPoints, x, y, maxX, maxY)
     addScatterPlotLegend(thisChart, color)  
   }
 
