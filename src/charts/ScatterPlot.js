@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import useAuth from '../useAuth'
 import * as d3 from 'd3'
 import {
   width,
@@ -15,7 +16,8 @@ import {
   addScatterPlotLegend
 } from "./d3UtilityFunctions"
 
-const ScatterPlot = ({data}) => {
+const ScatterPlot = ({api}) => {
+  const [ loading, data, error ] = useAuth(api)
   const scatterPlot = useRef(null)
 
   const drawScatterPlot = () => {
@@ -64,12 +66,16 @@ const ScatterPlot = ({data}) => {
   }
 
   useEffect(()=>{
-    drawScatterPlot(data)
+    data && drawScatterPlot(data)
   },[data])
 
   return(
     <>
-      <div ref={scatterPlot} className='chart' ></div>
+      {
+        loading ? <div>Loading...</div> :
+          error ? <div className='error'>Error Fetching Data </div> :
+            data && <div ref={scatterPlot} className='chart' ></div>
+      }
     </>
   )
 }

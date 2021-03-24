@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import useAuth from '../useAuth'
 import * as d3 from 'd3'
 import {
   width,
@@ -12,11 +13,12 @@ import {
   addTooltips
 } from "./d3UtilityFunctions"
 
-const BarChart = ({data}) => {
-  const  {body_mass_g} = data
+const BarChart = ({api}) => {
+  const [ loading, data, error ] = useAuth(api)
   const barChart = useRef(null)
 
   const drawBarChart = () => {
+    const  {body_mass_g} = data
     const thisChart = barChart.current
     const maxY = d3.max(Object.values(body_mass_g))
     const dataPoints = Object.entries(body_mass_g)
@@ -52,12 +54,16 @@ const BarChart = ({data}) => {
   }
 
   useEffect(()=>{
-    drawBarChart(data)
+    data && drawBarChart(data)
   },[data])
 
   return(
     <>
-      <div ref={barChart} className='chart'></div>
+      {
+        loading ? <div>Loading...</div> :
+          error ? <div className='error'>Error Fetching Data </div> :
+            data && <div ref={barChart} className='chart'></div>
+      }
     </>
   )
 }
