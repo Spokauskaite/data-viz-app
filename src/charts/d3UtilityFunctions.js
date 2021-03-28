@@ -69,6 +69,9 @@ export const addYAxis = ( ref, y , label , maxY) => {
 }
 
 export const addGridToXAxis = (ref) => {
+  d3.select(ref)
+    .selectAll("g.xAxis g.tick line.gridline")
+    .remove()
   d3.select(ref).selectAll("g.xAxis g.tick")
     .append("line")
     .attr("class", "gridline")
@@ -79,6 +82,9 @@ export const addGridToXAxis = (ref) => {
 }
 
 export const addGridToYAxis = (ref) => {
+  d3.select(ref)
+    .selectAll("g.yAxis g.tick line.gridline")
+    .remove()
   d3.select(ref).selectAll("g.yAxis g.tick")
     .append("line")
     .attr("class", "gridline")
@@ -213,6 +219,9 @@ export const addZoomIn = (ref, data, x, y, maxX, maxY) => {
       .duration(750)
       .call(d3.axisLeft(y).tickSize(0))
       .call(g => g.select(".domain").remove())
+
+    addGridToXAxis(ref)
+    addGridToYAxis(ref)
 
     scatter.selectAll("circle")
       .transition()  

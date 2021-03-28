@@ -50,7 +50,7 @@ def loadPenguinData():
         'sex' 
     ]
     fetched_data = fetched_data.to_json(orient='records')
-    return {"data":fetched_data}
+    return {'data':fetched_data}
 
 @app.route('/loadBarChartData')
 def loadBarChartData():
@@ -67,7 +67,7 @@ def loadBarChartData():
     ]
     grouped_data = fetched_data.groupby('species').mean().round(2)
     grouped_data = grouped_data.to_json()
-    return {"data":grouped_data}
+    return {'data':grouped_data}
 
 # this is for logging-------------------------
 if __name__ == '__main__':
