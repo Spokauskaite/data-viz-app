@@ -11,7 +11,7 @@ import {
   addGridToYAxis,
   addRectanglesToBarChart,
   addTooltips
-} from "./d3UtilityFunctions"
+} from './d3UtilityFunctions'
 
 const BarChart = ({api}) => {
   const [ loading, data, error ] = useAuth(api)
@@ -38,9 +38,9 @@ const BarChart = ({api}) => {
       .range(d3.schemeCategory10.slice(0,3))
       
     drawCanvas(thisChart) 
-    addTitle(thisChart, "Average Penguin Body Mass by Species")
-    addXAxis( thisChart, x , "Bill Length (mm)" )
-    addYAxis( thisChart, y , "Body  Mass (g)" , maxY)
+    addTitle(thisChart, 'Average Penguin Body Mass by Species')
+    addXAxis( thisChart, x , 'Bill Length (mm)' )
+    addYAxis( thisChart, y , 'Body  Mass (g)' , maxY)
     addGridToYAxis(thisChart)
     addRectanglesToBarChart( 
       thisChart, 

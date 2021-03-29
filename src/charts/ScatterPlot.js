@@ -14,7 +14,7 @@ import {
   addTooltips,
   addZoomIn,
   addScatterPlotLegend
-} from "./d3UtilityFunctions"
+} from './d3UtilityFunctions'
 
 const ScatterPlot = ({api, zoom}) => {
   const [ loading, data, error ] = useAuth(api)
@@ -25,6 +25,11 @@ const ScatterPlot = ({api, zoom}) => {
     const maxX = d3.max( data.map( d => d.bill_length_mm ))
     const maxY = d3.max( data.map( d => d.bill_depth_mm ))
     const dataPoints = Object.entries(data)
+    const features = {
+      x:'bill_length_mm',
+      y:'bill_depth_mm',
+      group:'species'
+    }
     const tooltipText = `\`<strong>Species:</strong> \${d[1].species} </br> 
                         <strong>Bill Length:</strong> \${d[1].bill_length_mm}mm </br>
                         <strong>Bill Depth:</strong> \${d[1].bill_depth_mm}mm </br>\``
@@ -45,14 +50,15 @@ const ScatterPlot = ({api, zoom}) => {
       .range(d3.symbols.map(s => d3.symbol().type(s)()))
 
     drawCanvas(thisChart) 
-    addTitle(thisChart, "Penguin Bill Size by Species")
-    addXAxis(thisChart, x , "Bill Length (mm)", maxX )
-    addYAxis(thisChart, y , "Bill Depth (mm)" , maxY)
+    addTitle(thisChart, 'Penguin Bill Size by Species')
+    addXAxis(thisChart, x , 'Bill Length (mm)', maxX )
+    addYAxis(thisChart, y , 'Bill Depth (mm)' , maxY)
     addGridToXAxis(thisChart)
     addGridToYAxis(thisChart)
     addDataPointsToScatterPlot( 
       thisChart, 
       dataPoints, 
+      features,
       x, 
       y,
       r, 
@@ -60,7 +66,15 @@ const ScatterPlot = ({api, zoom}) => {
       tooltipText
     )
     addTooltips(thisChart)
-    zoom && addZoomIn(thisChart, dataPoints, x, y, maxX, maxY)
+    zoom && addZoomIn(
+      thisChart, 
+      dataPoints, 
+      features, 
+      x, 
+      y, 
+      maxX, 
+      maxY
+    )
     addScatterPlotLegend(thisChart, color)  
   }
 
