@@ -4,6 +4,7 @@ export const margin = {top: 80, right:120, bottom: 60, left: 60}
 export const width = 600 - margin.left - margin.right
 export const height = 400 - margin.top - margin.bottom
 const labelMargin = 40
+const offset = 10
 
 export const drawCanvas = (ref) =>{
   // Create svg
@@ -105,7 +106,13 @@ export const addDataPointsToScatterPlot = (
   tooltipText
 ) => {
   const callShowTooltip = (event, d) => {
-    showTooltip(ref, d, tooltipText, event.screenX ,event.screenY )
+    showTooltip(
+      ref, 
+      d, 
+      tooltipText, 
+      event.pageX + offset ,
+      event.pageY + offset 
+    )
   }
 
   const callHideTooltip = () => {
@@ -138,7 +145,13 @@ export const addRectanglesToBarChart = (
 ) => {
 
   const callShowTooltip = (event, d) => {
-    showTooltip(ref, d, tooltipText, event.screenX ,event.screenY )
+    showTooltip(
+      ref, 
+      d, 
+      tooltipText, 
+      event.pageX + offset ,
+      event.pageY + offset 
+    )
   }
 
   const callHideTooltip = () => {
