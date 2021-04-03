@@ -69,6 +69,19 @@ def loadBarChartData():
     grouped_data = grouped_data.to_json()
     return {'data':grouped_data}
 
+@app.route('/loadLargeData')
+def loadLargeData():
+    database_file =  'large_data.db'
+    conn = sqlite3.connect(database_file)
+    c = conn.cursor()
+    sql_query ='''SELECT * FROM large_data'''
+    c.execute(sql_query)
+    fetched_data=c.fetchall()
+    fetched_data = pd.DataFrame(fetched_data)
+    fetched_data = fetched_data.to_json(orient='records')
+    return {'data':fetched_data}
+
+
 # this is for logging-------------------------
 if __name__ == '__main__':
     app.run()
