@@ -4,8 +4,10 @@ import JCSVTable from './tables/JCSVTable'
 import HandsonTable from './tables/HandsonTable'
 import BarChart from './charts/BarChart'
 import ScatterPlot from './charts/ScatterPlot'
+import useDataGenerator from './useDataGenerator'
 
-function App() {
+const App = () => {
+  const [ generating, data ] = useDataGenerator()
 
   return (
     <>
@@ -21,4 +23,4 @@ function App() {
   )
 }
 
-export default App;
+export default App

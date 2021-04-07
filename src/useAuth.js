@@ -1,7 +1,6 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { useEffect, useReducer } from 'react'
 
-function useAuth(api) {
+const useAuth = (api) => {
     let [state, dispatch] = useReducer((state, action) => {
     switch(action.type) {
       case 'LOADING': {
