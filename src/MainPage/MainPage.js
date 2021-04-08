@@ -1,12 +1,15 @@
 
 
-import { useState } from 'react'
+import { useState, createContext } from 'react'
 import faker from 'faker'
 import IntegerInput from './IntegerInput'
+import NavBar from './NavBar'
+import DataContext from './DataContext'
 
-const DatePage = () => {
+const MainPage = () => {
   const [nRows, setNRows] =  useState(10)
   const [generatedData, setGeneratedData] =  useState(null)
+  const { Provider }  = DataContext
 
   const generateDataset =  () => {
     let data = []
@@ -120,7 +123,7 @@ const DatePage = () => {
 
   return (
     <>
-      <h1>DATA PAGE</h1>
+      <h1>Main PAGE</h1>
       <h3>Enter a number of rows:</h3>
       <IntegerInput value={ nRows } min={10} max={100000} onChange={ (value) => setNRows(value) }/>
       <button 
@@ -129,11 +132,11 @@ const DatePage = () => {
       >
         Generate Dataset
       </button>
-      {
-        generatedData && <div>{JSON.stringify(generatedData)}</div>
-      }
+      <Provider value={{generatedData, setGeneratedData}}>
+        <NavBar />
+      </Provider>
     </>
   )
 }
 
-export default DatePage
+export default MainPage

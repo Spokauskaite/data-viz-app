@@ -1,5 +1,5 @@
 import './App.css'
-import NavBar from './NavBar.js'
+import MainPage from './MainPage/MainPage.js'
 
 const App = () => {
   //const [ generating, data ] = useDataGenerator()
@@ -7,7 +7,7 @@ const App = () => {
   return (
     <>
       <div className='main-page'>
-        <NavBar />
+        <MainPage />
       </div>
     </>
   )
