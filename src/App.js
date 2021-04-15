@@ -1,5 +1,7 @@
 import './App.css'
-import MainPage from './MainPage/MainPage.js'
+import { BrowserRouter as Router } from "react-router-dom"
+import SideBar from './components/sidebar/SideBar'
+import Content from './components/content/Content'
 
 const App = () => {
   //const [ generating, data ] = useDataGenerator()
@@ -7,7 +9,10 @@ const App = () => {
   return (
     <>
       <div className='main-page'>
-        <MainPage />
+        <Router>
+          <SideBar />
+          <Content />
+        </Router>
       </div>
     </>
   )

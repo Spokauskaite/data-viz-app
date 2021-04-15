@@ -1,4 +1,4 @@
-import HandsonTable from './HandsonTable'
+import HandsonTable from './tables/HandsonTable'
 
 const HandsontablePage = () => {
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import useAuth from '../useAuth'
+import useAuth from '../../../../../utils/hooks/useAuth'
 import * as d3 from 'd3'
 import {
   width,
@@ -11,7 +11,7 @@ import {
   addGridToYAxis,
   addRectanglesToBarChart,
   addTooltips
-} from './d3UtilityFunctions'
+} from '../../../../../utils/d3UtilityFunctions'
 
 const BarChart = ({api}) => {
   const [ loading, data, error ] = useAuth(api)

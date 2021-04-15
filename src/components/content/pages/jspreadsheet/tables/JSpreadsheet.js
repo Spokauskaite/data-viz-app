@@ -1,7 +1,7 @@
-import { useState, useEffect , useRef} from 'react'
+import { useEffect , useRef} from 'react'
 import Handsontable from "handsontable"
 import 'handsontable/dist/handsontable.full.css'
-import useAuth from '../useAuth'
+import useAuth from '../../../../../utils/hooks/useAuth'
 
 const HandsonTable = ({api}) => {
   const jTable = useRef(null)

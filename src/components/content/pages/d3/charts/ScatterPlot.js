@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import useAuth from '../useAuth'
+import useAuth from '../../../../../utils/hooks/useAuth'
 import * as d3 from 'd3'
 import {
   width,
@@ -14,7 +14,7 @@ import {
   addTooltips,
   addZoomIn,
   addScatterPlotLegend
-} from './d3UtilityFunctions'
+} from '../../../../../utils/d3UtilityFunctions'
 
 const ScatterPlot = ({api, zoom}) => {
   const [ loading, data, error ] = useAuth(api)

@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react'
 import faker from 'faker'
-import IntegerInput from './IntegerInput'
-import DataContext from '../DataContext'
+import IntegerInput from '../../../../utils/IntegerInput'
+import DataContext from '../../../../utils/DataContext'
 
 const DataPage = () => {
   const {generatedData, setGeneratedData} =  useContext(DataContext)

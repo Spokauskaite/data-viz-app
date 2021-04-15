@@ -1,5 +1,5 @@
-import JExcelTable from './JExcelTable'
-import JCSVTable from './JCSVTable'
+import JExcelTable from './tables/JExcelTable'
+import JCSVTable from './tables/JCSVTable'
 
 const JSpreadsheet = () => {
 

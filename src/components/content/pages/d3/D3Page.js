@@ -1,5 +1,5 @@
-import BarChart from './BarChart'
-import ScatterPlot from './ScatterPlot'
+import BarChart from './charts/BarChart'
+import ScatterPlot from './charts/ScatterPlot'
 
 const D3Page = () => {
 

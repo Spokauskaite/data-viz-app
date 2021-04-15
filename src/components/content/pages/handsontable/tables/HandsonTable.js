@@ -1,7 +1,7 @@
 import { useContext, useEffect , useRef} from 'react'
 import Handsontable from "handsontable"
 import 'handsontable/dist/handsontable.full.css'
-import DataContext from '../DataContext'
+import DataContext from '../../../../../utils/DataContext'
 
 const HandsonTable = () => {
   const tableRef = useRef(null)

@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
-import useAuth from '../useAuth'
+import { useEffect, useRef } from 'react'
+import useAuth from '../../../../../utils/hooks/useAuth'
 import jspreadsheet from 'jspreadsheet-ce'
-import "../../../node_modules/jspreadsheet-ce/dist/jspreadsheet.css"
+import "../../../../../../node_modules/jspreadsheet-ce/dist/jspreadsheet.css"
 
-const JExcelTable = ({api}) => {
+const JCSVTable = ({api}) => {
 
   const jTable = useRef(null)
   const thisTable = jTable.current
@@ -17,28 +17,16 @@ const JExcelTable = ({api}) => {
 
   const options = {
     data: data,
-    columns: [
-      { 
-        type: 'dropdown', 
-        title:'Species', 
-        width:120, 
-        source:[ "Adelie", "Chinstrap", "Gentoo" ]  
-      },
-      { type: 'text', title:'Island', width:150 },
-      { type: 'numeric', title:'Bill Length (mm)' },
-      { type: 'numeric', title:'Bill Depth (mm)'  },
-      { type: 'numeric', title:'Flipper Length (mm)' },
-      { type: 'numeric', title:'Body Mass (g)'},
-      { type: 'text', title:'Sex' },
-      { type: 'calendar', title:'Date'}
-    ],
-    tableWidth: "100%",
-    tableHeight: "70vh",
     tableOverflow:true,
-    minDimensions: [8, 8],
-    defaultColWidth: 150,
-    rows:{ 3: { height:'50px' }},
+    tableWidth: "1000px",
+    tableHeight: "400px",
+    lazyLoading: true,
+    lazyColumns: true,
+    loadingSpin: true,
+    defaultColWidth: 150
+    /*
     rowResize: true,
+    search: true,
     updateTable:function(
       instance, 
       cell, 
@@ -57,7 +45,7 @@ const JExcelTable = ({api}) => {
       }
     },
     onload: function(el, instance) {
-      let indices = range(0,8,1)
+      let indices = range(0,100,1)
       indices.map( idx => {
         const headerStyle = instance.thead.firstElementChild
         .children[idx].style
@@ -65,7 +53,7 @@ const JExcelTable = ({api}) => {
         headerStyle.color = "#ffffff"
       }
       )
-    }
+    }  */
   }
 
   useEffect(() => {
@@ -91,4 +79,4 @@ const JExcelTable = ({api}) => {
   )
 }
 
-export default JExcelTable
+export default JCSVTable
