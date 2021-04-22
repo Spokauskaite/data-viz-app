@@ -21,7 +21,7 @@ const SideBar = ({sidebarIsOpen,toggleSidebar})  => {
             <svg 
               viewBox='0 0 24 24' 
               id='exit-btn' 
-              className='exit'
+              className={classNames('exit', { 'is-invisible': !sidebarIsOpen })}
               onClick={toggleSidebar}
             >
               <path

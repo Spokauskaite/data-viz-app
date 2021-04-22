@@ -17,15 +17,12 @@ const Content = ({sidebarIsOpen,toggleSidebar}) => {
 
   return (
     <>
-      <Container
-        fluid
-        className={classNames('content', { 'is-open': sidebarIsOpen })}
-      >
+      <div className={classNames("content", { "is-open": sidebarIsOpen })} >
         <div>
           <svg 
             height='32px' 
             id='menu-btn' 
-            className='open' 
+            className={classNames('open', { 'is-invisible': sidebarIsOpen })}
             viewBox='0 0 32 32'
             onClick={toggleSidebar}
           >
@@ -51,7 +48,7 @@ const Content = ({sidebarIsOpen,toggleSidebar}) => {
             </Route>
           </Switch>
         </Provider>
-        </Container>
+      </div>
     </>
   )
 }
