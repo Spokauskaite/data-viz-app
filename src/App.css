@@ -32,6 +32,7 @@ a:focus {
   transition: all 0.5s;
   height: 100vh;
   position: fixed;
+  padding:0.5em;
 }
 
 .sidebar.is-open {
@@ -45,7 +46,14 @@ a:focus {
 
 .sidebar-header h3 {
   color: #fff;
-  padding: 1em;
+  padding: 1em 0 1em 0.5em;
+  font-size: 2em;
+}
+
+.sidebar h6 {
+  color: #fff;
+  padding: 1.3em 0 0 0.5em;
+  font-size: 1em;
 }
 
 .sidebar ul p {
@@ -53,51 +61,47 @@ a:focus {
   padding: 10px;
 }
 
-.nav-item:hover {
-  color: #7386d5;
-  background: #fff;
+.sidebar  a {
+  color: #fff ;
+  font-size:1.4em;
+  line-height: 2em;
+  padding:0.5em;
+  padding-left:1.4em;
 }
 
-.items-menu {
+.nav-item:hover{
+  background: #333636;
+}
+
+.sidebar  a:hover {
+  text-decoration: none;
   color: #fff;
-  background: #6d7fcc;
 }
 
-li a.dropdown-toggle::after {
-  display: inline-flex;
-  position: relative;
-  left: 60%;
-  top: 10%;
-}
-
-.sidebar-header > span {
-  position: relative;
-  float: right;
-  margin: 0.5em;
-  font-size: 2rem;
-  cursor: pointer;
-  display: none;
-}
 .side-menu {
   height: calc(100vh - 130px);
   overflow-y: scroll;
+  padding:0;
 }
 
 .side-menu::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 .side-menu::-webkit-scrollbar-thumb {
-  background: #5466b3;
+  background: #fff;
   border-radius: 3px;
 }
 
 .side-menu::-webkit-scrollbar-thumb:hover {
-  background: #3a4c99;
+  background: #fff;
 }
 
-.exit.is-invisible {
-  visibility: hidden;
+.exit {
+  height:40px;
+  display:flex;
+  flex-direction: row-reverse;
+  float:right;
 }
 
 /************** Content Styles *****************/
@@ -117,7 +121,7 @@ li a.dropdown-toggle::after {
 }
 
 .open.is-invisible {
-  visibility: hidden;
+  visibility: hidden
 }
 /************** D3 Graphs Styles *****************/
 

@@ -17,7 +17,7 @@ const Content = ({sidebarIsOpen,toggleSidebar}) => {
 
   return (
     <>
-      <div className={classNames("content", { "is-open": sidebarIsOpen })} >
+      <div className={classNames('content', { 'is-open': sidebarIsOpen })} >
         <div>
           <svg 
             height='32px' 
